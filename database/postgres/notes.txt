@@ -1,2 +1,0 @@
-To allow uuid generation run
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
