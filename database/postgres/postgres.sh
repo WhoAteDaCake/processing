@@ -1,7 +1,7 @@
 # This should just be used for local deployment
 NAME=whoatedacakeidid/processing-postgres
 ID=$(docker ps -aqf "name=pg-docker")
-#docker stop $ID
+docker stop $ID
 
 VOLUME="$HOME/docker/volumes/postgres"
 
@@ -12,6 +12,7 @@ docker run --rm --name pg-docker \
 	-e POSTGRES_USER=postgres \
 	-e POSTGRES_PASSWORD=docker \
 	-e POSTGRES_DB=content \
+	-d \
 	-p 5432:5432 \
 	-v $VOLUME:/var/lib/postgresql/data $NAME
 
