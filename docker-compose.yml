@@ -1,16 +1,34 @@
 version: '3'
 services:
-    postgresql:
-      image: 'whoatedacakeidid/processing-postgres:latest'
-      ports:
-        - "${PG_PORT}:${PG_PORT}"
-      environment:
-        - "POSTGRES_USER=${PG_USER}"
-        - "POSTGRES_PASSWORD=${PG_PASSWORD}"
-        - "POSTGRES_DB=${PG_DB}"
-      volumes:
-        - postgresql:/var/lib/postgresql/data
-
+  postgresql:
+    image: 'whoatedacakeidid/processing-postgres:latest'
+    ports:
+      - "${PG_PORT}:${PG_PORT}"
+    environment:
+      - "POSTGRES_USER=${PG_USER}"
+      - "POSTGRES_PASSWORD=${PG_PASSWORD}"
+      - "POSTGRES_DB=${PG_DB}"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+  graphql:
+    image: 'whoatedacakeidid/processing-graphql:latest'
+    ports:
+      - "${GRAPHQL_PORT}:${GRAPHQL_PORT}"
+    environment:
+      - "GRAPHQL_PORT=${GRAPHQL_PORT}"
+      - "POSTGRES_URL=${POSTGRES_URL}"
+    command: ["wait-for.sh", "postgresql:${PG_PORT}", "--", "yarn", "start"]
+  twitter-scraper:
+    image: 'whoatedacakeidid/twitter-scraper:latest'
+    environment:
+      - "IP=${IP}"
+      - "GRAPHQL_PORT=${GRAPHQL_PORT}"
+      - "TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}"
+      - "TWITTER_ACCESS_TOKEN_SECRET=${TWITTER_ACCESS_TOKEN_SECRET}"
+      - "TWITTER_CONSUMER_KEY=${TWITTER_CONSUMER_KEY}"
+      - "TWITTER_CONSUMER_SECRET=${TWITTER_CONSUMER_SECRET}"
+      - "TWITTER_HASHTAGS=${TWITTER_HASHTAGS}"
+    command: ["wait-for.sh", "graphql:${GRAPHQL_PORT}", "--", "yarn", "start"]
 
 volumes:
     postgresql: {}
