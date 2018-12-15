@@ -2,11 +2,11 @@
 
 ## Concept
 
-(Same as previous)
 Create a system that will:
 - Monitor a specific hashtag
 - Run keyword extraction on found text
 - Using graphql save id, text, hashtags, keywords in a postgres database
+- Use docker-compose to deploy using a single file 
 
 ## Things to improve
 
