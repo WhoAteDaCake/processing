@@ -17,3 +17,4 @@ WORKDIR /worker
 ADD . /worker/
 
 CMD "yarn start"
+
